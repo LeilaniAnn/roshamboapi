@@ -163,19 +163,6 @@ class roshamboAPI(remote.Service):
     def get_high_scores(self, request):
         """ Return top 5 high scores """
         return RankForms(items=[user.to_rank_form() for user in User.query().order(-User.win_ratio).fetch(limit=5)])
-
-
-    @staticmethod
-    def _update_user_score(user_name, result):
-        """ Update User Score """
-        user = User.query(User.name==user_name).get()
-        user.gamesPlayed += 1
-        if result == 'win':
-            user.wins += 1
-        elif result == 'lose':
-            user.losses += 1
-        user.win_ratio = float(user.wins)/user.gamesPlayed * 100
-        user.put()
     
         
 api = endpoints.api_server([roshamboAPI])
