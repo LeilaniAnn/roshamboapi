@@ -58,6 +58,9 @@ class roshamboAPI(remote.Service):
                     'A User with that name already exists!')
         user = User(name=request.user_name, email=request.email)
         user.put()
+        # Send Welcome email.
+        taskqueue.add(url='/tasks/send_welcome_email',
+                      params={'user_key': user.key})
         return StringMessage(message='User {} created!'.format(
                 request.user_name))
 

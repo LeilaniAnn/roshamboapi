@@ -27,6 +27,19 @@ class SendEmailReminderHandler(webapp2.RequestHandler):
                            user.email,
                            subject,
                            body)
+# Sends a user an email when they create a User
+class SendUserEmail(webapp2.RequestHandler):
+    def post(self):
+        """Send an email upon User Creation"""
+        user = get_by_urlsafe(self.request.get('user_key'), User)
+        subject = 'Welcome!'
+        body = "Welcome to Roshambo!"
+        logging.debug(body)
+        mail.send_mail('noreply@{}.appspotmail.com'.
+                       format(app_identity.get_application_id()),
+                       user.email,
+                       subject,
+                       body)
 
 
 class UpdateUserScoreHandler(webapp2.RequestHandler):
@@ -40,4 +53,5 @@ class UpdateUserScoreHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/crons/send_reminder', SendEmailReminderHandler),
     ('/tasks/update_user_score', UpdateUserScoreHandler),
+    ('/tasks/send_welcome_email', SendUserEmail)
 ], debug=True)
