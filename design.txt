@@ -2,4 +2,14 @@ Reflect on Your Design
 Document your design decisions by answering the following questions:
 
 What additional properties did you add to your models and why?
+
+  I added "lizard" and "spock" to the original Rock, Paper, Scissors (Roshambo) game. I just wanted to implement more choices to the users as well as alter the win-ratio a bit by having more options there are also more ways to win/lose. 
+
+  In addition to adding 2 more options, I also added the option of "cancelling" via command choice in game. The reason I chose to go this route is because if a user wants to cancel, they can only really cancel a game by not playing. If they choose to cancel a game that's complete - it's essentially deleting the record from ever happening. Player lost? Just delete- it never happened! Since the game is simple 1.) it's VS AI 2.) you only make one command and the game is over there is really no point in cancelling. When a player decides to cancel, so does the opponent and it is not counted as a win nor loss. To bypass that I could have implemented allowing users to play each other, which would be my next step, and you can easily cancel a game in-progress. 
+
+  I also added a simplified version of user ranking/high scores. Since high scores is essentially user ranking, but with a limit of how many "high scores" they are, I repeated the query but limited the results back. It only really makes a noticeable difference if you have more than 5 players.
+  
+  My initial next step is to add front-end compatibility. 
+
 What were some of the trade-offs or struggles you faced when implementing the new game logic?
+	The biggest struggle I faced was actually implementing the win-ratio feature. I was wanting to use .count() from GAE but could not get it to work correctly. After that, I kept getting 2 errors "ZeroDivisionError: float division by zero" and "Error: ZeroDivisionError: integer division or modulo by zero". I was trying to access the win ratio simply by taking wins divided by (wins+losses+ties) and even if I included exceptions for 0, I'd still get the error. I then added a win_ratio to my model and took a different approach for updating user stats instead of trying to update win_ratio during new game. 
