@@ -30,7 +30,10 @@ class User(ndb.Model):
         form.user_name = self.name
         form.win_ratio = str(self.win_ratio)
         return form
-
+    def update_user_score(user_name, result):
+        """ Update User Score """
+        user.win_ratio = float(user.wins)/user.gamesPlayed * 100
+        user.put()
 class UserForm(messages.Message):
     """UserForm for information about the current user"""
     user_name = messages.StringField(1, required=True)
