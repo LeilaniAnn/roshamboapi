@@ -157,7 +157,7 @@ class roshamboAPI(remote.Service):
     
     @endpoints.method(request_message=GET_USER_RANKINGS,
                       response_message=RankForms,
-                      path='topten',
+                      path='highScores',
                       name='get_high_scores',
                       http_method='GET')
     def get_high_scores(self, request):
