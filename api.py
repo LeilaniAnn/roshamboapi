@@ -78,7 +78,7 @@ class roshamboAPI(remote.Service):
         try:
             game = Game.new_game(user.key, request.playerCommand)
         except ValueError:
-            raise endpoints.BadRequestException('Please make a valid choice from rock, scissors and paper')
+            raise endpoints.BadRequestException('Please make a valid choice: Rock, Paper, Scissors, Lizard, Spock')
 
         # Use a task queue to update the average attempts remaining.
         # This operation is not needed to complete the creation of a new game
