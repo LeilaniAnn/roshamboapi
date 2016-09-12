@@ -7,7 +7,8 @@ from api import roshamboAPI
 import webapp2
 from google.appengine.api import mail, app_identity
 
-from models import User
+from models.user import *
+from models.game import *
 
 
 class SendEmailReminderHandler(webapp2.RequestHandler):
@@ -20,7 +21,7 @@ class SendEmailReminderHandler(webapp2.RequestHandler):
         for user in users:
             games = Game.query(
                     ndb.AND(
-                    Game.game_over == False, 
+                    Game.over == False, 
                     ndb.OR(Game.playerOne == user.key, 
                            Game.playerTwo == user.key
                           )
@@ -28,11 +29,11 @@ class SendEmailReminderHandler(webapp2.RequestHandler):
                     )
             for game in games:
                 if game.playerOne == user.key:
-                    if len(game.player_one_weapons) < game.total_rounds:
+                    if len(game.playerOne_command) < game.rounds:
                         send_email = True
                         break
                 else:
-                    if len(game.player_two_weapons) < game.total_rounds:
+                    if len(game.playerTwo_command) < game.rounds:
                         send_email = True
                         break
             if send_email:
@@ -43,19 +44,6 @@ class SendEmailReminderHandler(webapp2.RequestHandler):
                            subject,
                            body)
 
-# Sends a user an email when they create a User
-class SendUserEmail(webapp2.RequestHandler):
-    def post(self):
-        """Send an email upon User Creation"""
-        user = get_by_urlsafe(self.request.get('playerOne'), User)
-        subject = 'Welcome!'
-        body = "Welcome to Roshambo!"
-        logging.debug(body)
-        mail.send_mail('noreply@{}.appspotmail.com'.
-                       format(app_identity.get_application_id()),
-                       user.email,
-                       subject,
-                       body)
 
 
 class CacheUserStats(webapp2.RequestHandler):
@@ -66,7 +54,6 @@ class CacheUserStats(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/crons/send_reminder', SendEmailReminderHandler),
-    ('/tasks/send_welcome_email', SendUserEmail),
     ('/tasks/cache_user_stats', CacheUserStats),
 
 ], debug=True)
