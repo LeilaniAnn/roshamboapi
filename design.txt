@@ -10,6 +10,9 @@ What additional properties did you add to your models and why?
   I also added a simplified version of user ranking/high scores. Since high scores is essentially user ranking, but with a limit of how many "high scores" they are, I repeated the query but limited the results back. It only really makes a noticeable difference if you have more than 5 players.
   
   My initial next step is to add front-end compatibility. 
-
+// ADDED AFTER FIRST GRADING //
+	I have implemented the cancel_game feature as well as allowing 2 players to play against each other. I think this was a much cleaner approach since I also added more things to the Model.
+	
 What were some of the trade-offs or struggles you faced when implementing the new game logic?
 	The biggest struggle I faced was actually implementing the win-ratio feature. I was wanting to use .count() from GAE but could not get it to work correctly. After that, I kept getting 2 errors "ZeroDivisionError: float division by zero" and "Error: ZeroDivisionError: integer division or modulo by zero". I was trying to access the win ratio simply by taking wins divided by (wins+losses+ties) and even if I included exceptions for 0, I'd still get the error. I then added a win_ratio to my model and took a different approach for updating user stats instead of trying to update win_ratio during new game. 
+	// After adding the cancel_game and make_move, I also removed some redundant endpoints.
