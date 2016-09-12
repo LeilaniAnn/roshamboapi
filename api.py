@@ -30,8 +30,6 @@ GET_USER_GAMES = endpoints.ResourceContainer(
                             )
 SELECT_COMMAND_REQUEST = endpoints.ResourceContainer(MakeMoveForm)
 
-GET_ALL_GAMES_REQUEST = endpoints.ResourceContainer()
-
 USER_REQUEST = endpoints.ResourceContainer(user_name=messages.StringField(1),
                                            email=messages.StringField(2)
                                           )
@@ -164,15 +162,6 @@ class roshamboAPI(remote.Service):
       # so it is performed out of sequence.
       taskqueue.add(url='/tasks/cache_user_stats')
       return game.to_form("Game Successfully Created!")
-
-    @endpoints.method(request_message=GET_ALL_GAMES_REQUEST,
-                      response_message=GameForms,
-                      path='game/get_all',
-                      name='all_games',
-                      http_method='GET')
-    def get_all_games(self, request):
-        """Return all games."""
-        return GameForms(items=[game.to_form('') for game in Game.query()])
 
     @endpoints.method(request_message=GET_GAME_REQUEST,
                       response_message=StringMessage,
