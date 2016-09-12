@@ -5,7 +5,7 @@ import random
 from datetime import date
 from protorpc import messages
 from google.appengine.ext import ndb
-from User import *
+from user import *
 import endpoints
 
 COMMANDS = ['rock', 'paper', 'scissors', 'lizard', 'spock']
@@ -124,10 +124,10 @@ class Game(ndb.Model):
         """Returns a GameForm representation of the Game"""
         form = GameForm()
         form.urlsafe_key = self.key.urlsafe()
-        p1_name = self.playerOne.get().name
-        p2_name = self.playerTwo.get().name
-        form.p1_name= p1_name
-        form.p2_name = p2_name
+        playerOne_name = self.playerOne.get().name
+        playerTwo_name = self.playerTwo.get().name
+        form.playerOne_name= playerOne_name
+        form.playerTwo_name = playerTwo_name
         if self.cancelled:
             form_msg = "{} - Game Status: CANCELLED".format(message)
         else:
