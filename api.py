@@ -13,9 +13,9 @@ from google.appengine.api import memcache
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
 
-from models.User import User, UserForm, UserForms
-from models.Game import Game, NewGameForm, GameForm, GameForms, MakeMoveForm, COMMANDS
-from models.Rank import StringMessage, RankForm, RankForms
+from models.user import User, UserForm, UserForms
+from models.game import Game, NewGameForm, GameForm, GameForms, MakeMoveForm, COMMANDS
+from models.rank import StringMessage, RankForm, RankForms
 from utils import get_by_urlsafe
 
 
@@ -261,6 +261,9 @@ class roshamboAPI(remote.Service):
             # make move in game
             game.makeMove()
             game.put()
+        else:
+          raise endpoints.BadRequestException('Please select a valid command!')
+
         return game.to_form(txt)
 
     

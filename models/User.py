@@ -3,7 +3,7 @@ from datetime import date
 from protorpc import messages
 from google.appengine.ext import ndb
 
-from Rank import RankForm
+from rank import RankForm
 
 class User(ndb.Model):
     """User profile"""
