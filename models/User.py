@@ -25,15 +25,20 @@ class User(ndb.Model):
         form.gamesPlayed = str(self.gamesPlayed)
         form.draws = str(self.draws)
         return form
+
     def to_rank_form(self):
         form = RankForm()
         form.user_name = self.name
         form.win_ratio = str(self.win_ratio)
         return form
-    def update_user_score(user_name, result):
+
+    def update_user_score(self):
         """ Update User Score """
-        user.win_ratio = float(user.wins)/user.gamesPlayed * 100
-        user.put()
+        if self.losses + self.wins == 0:
+            self.win_ratio = 0.0
+        else:
+            self.win_ratio = float(self.wins)/(self.gamesPlayed) * 100
+
 class UserForm(messages.Message):
     """UserForm for information about the current user"""
     user_name = messages.StringField(1, required=True)
