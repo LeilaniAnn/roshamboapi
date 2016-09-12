@@ -17,7 +17,7 @@ One popular five-weapon expansion is "rock-paper-scissors-Spock-lizard", invente
 
 (https://en.wikipedia.org/wiki/Rock–paper–scissors)
  
-While in game, the player (you) will choose a command of "rock", "paper", "scissors", "lizard", "spock", or "cancel" (to run away) and the opponent (computer/AI) will randomly pick a command. The result is displayed immediately . Each game can be retrieved by its id using the path parameter `urlsafe_game_key`.
+While in game, a game can be created with 2 players and any number of rounds. The player (you) will choose a command of "rock", "paper", "scissors", "lizard", "spock" and the opponent player (also you) will also pick a command. The result is displayed immediately . Each game can be retrieved by its id using the path parameter `urlsafe_game_key`.
 
 ##Files Included:
  - api.py: Contains endpoints and game playing logic.
@@ -39,46 +39,18 @@ While in game, the player (you) will choose a command of "rock", "paper", "sciss
  - **new_game**
     - Path: 'game'
     - Method: POST
-    - Parameters: user_name, player_choice
+    - Parameters: playerOne, playerTwo, rounds
     - Returns: GameForm with game result.
-    - Description: Creates a new Game. user_name provided must correspond to an
-    existing user - will raise a NotFoundException if not. Valid commands are "rock", 
-    "paper", "scissors", "lizard", "spock", or "cancel". Will raise BadRequestException
-     otherwise. The API will randomly generate a command as an opponent. The
-     result will be returned as a GameForm. The user record of 'wins', 'loses', 
-    'games' and 'win_ratio' are updated.
-     
- - **get_game**
-    - Path: 'game/{urlsafe_game_key}'
-    - Method: GET
-    - Parameters: urlsafe_game_key
-    - Returns: GameForm with game state.
-    - Description: Returns the state of a game.
-    
- - **get_all_users**
-    - Path: 'allusers'
-    - Method: GET
-    - Parameters: None
-    - Returns: UserForms of all users.
-    - Description: Returns UserForms of all users.
-    
- - **get_user_record**
-    - Path: 'record/{user_name}'
-    - Method: GET
-    - Parameters: user_name, email (optional)
-    - Returns: UserForm of a specific user.
-    - Description: Returns UserForm of a specific user. Includes games played, wins, 
-      losses, draws, and win ratio.
-    
- - **get_all_games**
-    - Path: 'allgames'
-    - Method: GET
-    - Parameters: None
-    - Returns: GameForms history of all games.
-    - Description: Returns GameForms history of all games.
-    
+    - Description: Creates a new Game with 2 players (playerOne and playerTwo) with a number of rounds. 
+ - **make_move**
+    - Path: 'game/make_move'
+    - Method: PUT
+    - Parameters: urlsafe_game_key, command, user_name
+    - Returns: GameForm with game result
+    - Description: game with certain # rounds (accoring to player). user_name provided must correspond to an existing user - will raise a NotFoundException if not. Valid commands are "rock", "paper", "scissors", "lizard", "spock", or "cancel". Will raise BadRequestException otherwise. The API will randomly generate a command as an opponent. The result will be returned as a GameForm. The user record of 'wins', 'loses', 'games' and 'win_ratio' are updated.
+
  - **get_user_games**
-    - Path: 'games/{user_name}'
+    - Path: 'game/get_by_user/{user_name}'
     - Method: GET
     - Parameters: user_name
     - Returns: GameForms of a specific user.
@@ -90,15 +62,29 @@ While in game, the player (you) will choose a command of "rock", "paper", "sciss
     - Parameters: None
     - Returns: RankForms of all users ordered by win_ratio.
     - Description: Returns RankForms of all users ordered by win_ratio.
-
- - **get_high_scores**
-    - Path: 'highScores'
+    
+ - **get_user_stats**
+    - Path: 'rankings'
     - Method: GET
     - Parameters: None
-    - Returns: StringMessage of top five players according to win_ratio.
-    - Description: Return top five players.
+    - Returns: RankForms of all users ordered by win_ratio.
+    - Description: Returns RankForms of all users ordered by win_ratio.
     
+ - **get_game_history**
+    - Path: 'game/{urlsafe_game_key}/history'
+    - Method: GET
+    - Parameters: urlsafe_game_key
+    - Returns: StringMessage of all completed games and results.
+    - Description: Returns history of completed games - players and results
+ - **cancel_game**
+    - Path: 'game/{urlsafe_game_key}/cancel'
+    - Method: GET
+    - Parameters: urlsafe_game_key
+    - Returns: GameForm of cancelled game completion.
+    - Description: Cancels a game- unless game is completed
 
+
+    
 ##Models Included:
  - **User**
     - Stores unique user_name and (optional) email address.
@@ -111,15 +97,13 @@ While in game, the player (you) will choose a command of "rock", "paper", "sciss
     
 ##Forms Included:
  - **GameForm**
-    - Representation of a Game's result (urlsafe_key, playerCommand, opponentCommand,
-    result, message, user_name).
+    - Representation of a Game (urlsafe_key, playerOne_name, playerTwo_name, message).
  - **NewGameForm**
     - Used to create a new game (user_name, player_form)
  - **GameForms**
     - Multiple GameForm container.    
  - **UserForm** 	
-    - Representation of a User's information(user_name, win_ratio, games played, wins, losses,
- 	draws)
+    - Representation of a User's information(user_name, win_ratio, games played, wins, losses)
  - **UserForms**
     - Multiple UserForm container.
  - **RankForm**
