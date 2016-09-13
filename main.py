@@ -6,9 +6,10 @@ from api import roshamboAPI
 
 import webapp2
 from google.appengine.api import mail, app_identity
+from google.appengine.ext import ndb
 
-from models.user import *
-from models.game import *
+from models.User import User
+from models.Game import Game
 
 
 class SendEmailReminderHandler(webapp2.RequestHandler):

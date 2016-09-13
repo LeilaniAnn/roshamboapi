@@ -3,9 +3,6 @@
 This can also contain game logic. For more complex games it would be wise to
 move game logic to another file. Ideally the API will be simple, concerned
 primarily with communication to/from the API's users."""
-
-
-import logging
 import endpoints
 from protorpc import remote, messages
 from google.appengine.api import memcache
@@ -13,9 +10,9 @@ from google.appengine.api import memcache
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
 
-from models.user import User, UserForm, UserForms
-from models.game import Game, NewGameForm, GameForm, GameForms, MakeMoveForm, COMMANDS
-from models.rank import StringMessage, RankForm, RankForms
+from models.User import User
+from models.Game import Game, NewGameForm, GameForm, GameForms, MakeMoveForm, COMMANDS
+from models.Rank import StringMessage, RankForms
 from utils import get_by_urlsafe
 
 

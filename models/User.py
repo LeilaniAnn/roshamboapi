@@ -3,7 +3,7 @@ from datetime import date
 from protorpc import messages
 from google.appengine.ext import ndb
 
-from rank import RankForm
+from Rank import RankForm
 
 class User(ndb.Model):
     """User profile"""
@@ -39,15 +39,3 @@ class User(ndb.Model):
         else:
             self.win_ratio = float(self.wins)/(self.gamesPlayed) * 100
 
-class UserForm(messages.Message):
-    """UserForm for information about the current user"""
-    user_name = messages.StringField(1, required=True)
-    win_ratio = messages.StringField(2, required=True)
-    gamesPlayed = messages.StringField(3, required=True)
-    wins = messages.StringField(4, required=True)
-    losses = messages.StringField(5, required=True)
-    draws = messages.StringField(6, required=True)        
-
-class UserForms(messages.Message):
-    """Multiple UserForm container"""
-    items = messages.MessageField(UserForm, 1, repeated=True)
